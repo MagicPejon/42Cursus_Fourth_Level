@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/10/25 16:05:13 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/08 15:58:37 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g3
 RM		=	rm	-rf
 
-SRCS 	=	
+SRCS 	=	philo.c\
+			philo_init.c\
+			
 
 all: $(NAME)
 
@@ -35,7 +37,6 @@ all: $(NAME)
 OBJS	= 	$(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
-	@$(MAKE) all -C libft
 	@printf "$(CYAN)\n==========================\n"
 	@printf "$(CYAN) PROGRAM CREATED\n"
 	@printf "$(CYAN)==========================\n"
