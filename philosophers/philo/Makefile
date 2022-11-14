@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/11/09 14:19:22 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/14 16:52:47 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CYAN	=	\033[1;36m
 
 NAME	=	philo
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
 PHILO_FLAGS = -g -pthread
 RM		=	rm	-rf
 
