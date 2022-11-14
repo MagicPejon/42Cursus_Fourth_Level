@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:27:35 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/08 15:59:41 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:47:36 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,16 @@ enum	e_philo_state
 typedef struct s_philo{
 	int				philo_id;
 	int				state;
+	bool			forks;
+	bool			p_forks;
 	unsigned int	l_timer;
+	pthread_t		thread;
+	pthread_mutex_t	lock;
+	pthread_mutex_t	rlock;
+	struct timeval	start;
+	struct timeval	life;
+	struct s_table	*table_info;
+	struct s_philo	*pos;
 }	t_philo;
 
 typedef struct s_table{
@@ -62,9 +71,9 @@ typedef struct s_table{
 	unsigned int	time_to_sleep;
 	unsigned int	time_to_die;
 	unsigned int	goal;
-	bool			*forks;
-	bool			*p_forks;
-	unsigned int	time;
+	bool			philo_dead;
+	pthread_mutex_t	dlock;
+	pthread_mutex_t	plock;
 }	t_table;
 
 /* philo.c */
@@ -74,6 +83,6 @@ int		philo_strlen(char *str);
 /* philo_init.c */
 void	philo_free(char *err, t_table *table);
 int		philo_atoi(char *av, t_table *table);
-void	philo_init(char **av, t_table **table);
+void	philo_init(char **av, t_philo **philo);
 
 #endif

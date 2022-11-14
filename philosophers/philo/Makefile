@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/11/08 15:58:37 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/09 14:19:22 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ CYAN	=	\033[1;36m
 NAME	=	philo
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g3
+PHILO_FLAGS = -g -pthread
 RM		=	rm	-rf
 
 SRCS 	=	philo.c\
@@ -31,7 +32,7 @@ all: $(NAME)
 
 %.o: %.c
 	@printf "\033[A\033[2K\r$(GREEN)Compiling: "
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(PHILO_FLAGS) -c $< -o $@
 	@printf "🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇🏇"
 	
 OBJS	= 	$(SRCS:.c=.o)
