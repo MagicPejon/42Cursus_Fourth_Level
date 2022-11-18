@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:27:35 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/14 20:58:48 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:20:15 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,11 @@ typedef enum e_philo_state
 }	t_state;
 
 typedef struct s_philo{
-	int				philo_id;
+	unsigned int	philo_id;
 	t_state			state;
-	bool			forks;
-	bool			p_forks;
 	unsigned int	l_timer;
 	unsigned int	meals;
 	pthread_t		thread;
-	pthread_mutex_t	lock;
-	pthread_mutex_t	rlock;
 	struct timeval	start;
 	struct timeval	life;
 	struct s_table	*table_info;
@@ -73,7 +69,10 @@ typedef struct s_table{
 	unsigned int	time_to_sleep;
 	unsigned int	time_to_die;
 	unsigned int	goal;
+	unsigned int	*p_forks;
 	bool			philo_dead;
+	bool			*forks;
+	pthread_mutex_t	*fo_lock;
 	pthread_mutex_t	dlock;
 	pthread_mutex_t	plock;
 }	t_table;
@@ -83,9 +82,16 @@ void	philo_print_error(char *err);
 int		philo_strlen(char *str);
 
 /* philo_init.c */
-void	philo_free(char *err, t_philo *philo, t_table *table);
 int		philo_atoi(char *av, t_philo *philo, t_table *table);
+void	fork_init(t_philo *philo, t_table **table);
 t_table	*table_init(char **av, t_philo *philo, t_table *table);
 t_table	*philo_init(char **av, t_philo *philo);
+
+/* philo_free.c */
+void	philo_free(char *err, t_philo *philo, t_table *table);
+void	philo_complete(t_table *table, t_philo *philo);
+
+/* philo_summon.c */
+void	philo_summon(t_philo *philo, t_table *table);
 
 #endif

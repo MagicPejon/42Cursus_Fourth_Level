@@ -6,20 +6,11 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 15:32:22 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/14 20:59:02 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:21:09 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	philo_free(char *err, t_philo *philo, t_table *table)
-{
-	if (table)
-		free(table);
-	if (philo)
-		free(philo);
-	philo_print_error(err);
-}
 
 int	philo_atoi(char *av, t_philo *philo, t_table *table)
 {
@@ -49,6 +40,28 @@ int	philo_atoi(char *av, t_philo *philo, t_table *table)
 	return (res * sign);
 }
 
+void	fork_init(t_philo *philo, t_table **table)
+{
+	unsigned int	i;
+
+	(*table)->forks = malloc(sizeof((*table)->nop));
+	if (!(*table)->forks)
+		philo_free(ERR_MALLOC, philo, (*table));
+	(*table)->p_forks = malloc(sizeof((*table)->nop));
+	if (!(*table)->p_forks)
+		philo_free(ERR_MALLOC, philo, (*table));
+	(*table)->fo_lock = malloc(sizeof((*table)->nop));
+	if (!(*table)->fo_lock)
+		philo_free(ERR_MALLOC, philo, (*table));
+	i = 0;
+	while (i < (*table)->nop)
+	{
+		(*table)->forks[i] = false;
+		(*table)->p_forks[i] = 0;
+		pthread_mutex_init(&(*table)->fo_lock[i++], NULL);
+	}
+}
+
 t_table	*table_init(char **av, t_philo *philo, t_table *table)
 {
 	int	i;
@@ -63,6 +76,9 @@ t_table	*table_init(char **av, t_philo *philo, t_table *table)
 	else
 		table->goal = 0;
 	table->philo_dead = false;
+	fork_init(philo, &table);
+	pthread_mutex_init(&table->dlock, NULL);
+	pthread_mutex_init(&table->plock, NULL);
 	return (table);
 }
 
@@ -78,13 +94,11 @@ t_table	*philo_init(char **av, t_philo *philo)
 	table_info = table_init(av, philo, table_info);
 	while (i < table_info->nop)
 	{
-		philo[i].table_info = table_info;
 		philo[i].philo_id = i + 1;
 		philo[i].state = SPAWNED;
-		philo[i].forks = 0;
-		philo[i].p_forks = 0;
-		philo[i].l_timer = 0;
+		philo[i].l_timer = table_info->time_to_die;
 		philo[i].meals = 0;
+		philo[i].table_info = table_info;
 		if (i == table_info->nop - 1)
 			philo[i].pos = &philo[0];
 		else

@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/11/14 16:52:47 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/18 17:33:07 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,14 @@ CYAN	=	\033[1;36m
 
 NAME	=	philo
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g3
 PHILO_FLAGS = -g -pthread
 RM		=	rm	-rf
 
 SRCS 	=	philo.c\
 			philo_init.c\
+			philo_free.c\
+			philo_summon.c\
 			
 
 all: $(NAME)
@@ -39,7 +41,7 @@ OBJS	= 	$(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
 	@printf "$(CYAN)\n==========================\n"
-	@printf "$(CYAN) PROGRAM CREATED\n"
+	@printf "$(CYAN) SIMULATION READY\n"
 	@printf "$(CYAN)==========================\n"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
