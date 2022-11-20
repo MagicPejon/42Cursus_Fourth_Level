@@ -6,37 +6,40 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 18:02:49 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/18 20:09:43 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/20 17:06:49 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned int	philo_utime(t_philo *person, unsigned int p_start)
+size_t	philo_utime(t_philo *person, t_time t)
 {
-	unsigned int	p_life;
-
 	gettimeofday(&person->life, NULL);
-	p_life = (person->life.tv_sec * 1000) + (person->life.tv_usec / 1000);
-	p_life = p_life - p_start;
-	return (p_life);
+	t.p_life = (person->life.tv_sec * 1000) + (person->life.tv_usec / 1000);
+	t.p_life = t.p_life - t.p_start;
+	return (t.p_life);
 }
 
 void	*philo_table(void *philo)
 {
-	int		p_start;
-	int		p_life;
-	t_philo	*person;
+	t_time	t;
+	t_philo	*p;
 
-	person = (t_philo *) philo;
-	gettimeofday(&person->start, NULL);
-	p_start = (person->start.tv_sec * 1000) + (person->start.tv_usec / 1000);
-	while (person->table_info->philo_dead == false || p_life == person->l_timer)
+	p = (t_philo *) philo;
+	gettimeofday(&p->start, NULL);
+	t.p_start = (p->start.tv_sec * 1000) + (p->start.tv_usec / 1000);
+	t.p_life = philo_utime(p, t);
+	//Soft code for one philosophor
+	while (p->t_info->philo_dead == false
+		&& p->l_timer < p->t_info->time_to_die
+		&& (p->meals != p->t_info->goal && p->t_info->goal != 0))
 	{
-		p_life = philo_utime(person, p_start);
+		if (!(*p->lfork) && !(*p->rfork)
+			&& (*p->lmfork) != p->id && (*p->rmfork) != p->id)
+			philo_chowder(p, t);
 	}
 	//make a to die function
-	return ((void *) person);
+	return ((void *) p);
 }
 
 void	philo_summon(t_philo *philo, t_table *table)
@@ -44,7 +47,7 @@ void	philo_summon(t_philo *philo, t_table *table)
 	unsigned int	i;
 
 	i = 0;
-	while (i < philo->table_info->nop)
+	while (i < philo->t_info->nop)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &philo_table,
 				&philo[i]) != 0)
@@ -52,7 +55,7 @@ void	philo_summon(t_philo *philo, t_table *table)
 		i++;
 	}
 	i = 0;
-	while (i < philo->table_info->nop)
+	while (i < philo->t_info->nop)
 	{
 		if (pthread_join(philo[i++].thread, NULL) != 0)
 			philo_free(ERR_JOIN, philo, table);

@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:59:06 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/18 17:45:48 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:44:43 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	philo_free(char *err, t_philo *philo, t_table *table)
 	{
 		if (table->forks)
 			free(table->forks);
-		if (table->p_forks)
-			free(table->p_forks);
+		if (table->m_forks)
+			free(table->m_forks);
 		if (table->fo_lock)
 		{
 			while (i < table->nop)
@@ -44,7 +44,7 @@ void	philo_complete(t_table *table, t_philo *philo)
 	while (i < table->nop)
 		pthread_mutex_destroy(&table->fo_lock[i++]);
 	free(table->forks);
-	free(table->p_forks);
+	free(table->m_forks);
 	free(table->fo_lock);
 	free(table);
 	free(philo);

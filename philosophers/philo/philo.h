@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:27:35 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/18 20:20:15 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/20 16:27:16 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@
 /* for boolean stuff*/
 # include <stdbool.h>
 
+# define DEFAULT	"\033[0m"
+# define YELLOW		"\033[1;33m"
+# define GREEN		"\033[1;32m"
+# define CYAN		"\033[1;36m"
+# define RED		"\033[1;31m"
+# define PURPLE		"\033[0;35m"
+
 # define ERR_INPUT "Wrong number of arguments or invalid inputs, remember:\n\
 ./philo no_of_philosophers time_to_die time_to_eat time_to_sleep \
 [no_of_philosophers_ate]\n"
@@ -51,16 +58,26 @@ typedef enum e_philo_state
 	DEAD
 }	t_state;
 
+typedef struct s_time
+{
+	size_t			p_start;
+	size_t			p_life;
+	struct timeval	random;
+}	t_time;
+
 typedef struct s_philo{
-	unsigned int	philo_id;
+	unsigned int	id;
+	bool			*lfork;
+	bool			*rfork;
+	unsigned int	*lmfork;
+	unsigned int	*rmfork;
 	t_state			state;
 	unsigned int	l_timer;
 	unsigned int	meals;
 	pthread_t		thread;
 	struct timeval	start;
 	struct timeval	life;
-	struct s_table	*table_info;
-	struct s_philo	*pos;
+	struct s_table	*t_info;
 }	t_philo;
 
 typedef struct s_table{
@@ -69,7 +86,7 @@ typedef struct s_table{
 	unsigned int	time_to_sleep;
 	unsigned int	time_to_die;
 	unsigned int	goal;
-	unsigned int	*p_forks;
+	unsigned int	*m_forks;
 	bool			philo_dead;
 	bool			*forks;
 	pthread_mutex_t	*fo_lock;
@@ -78,20 +95,29 @@ typedef struct s_table{
 }	t_table;
 
 /* philo.c */
-void	philo_print_error(char *err);
-int		philo_strlen(char *str);
+void			philo_print_error(char *err);
+int				philo_strlen(char *str);
 
 /* philo_init.c */
-int		philo_atoi(char *av, t_philo *philo, t_table *table);
-void	fork_init(t_philo *philo, t_table **table);
-t_table	*table_init(char **av, t_philo *philo, t_table *table);
-t_table	*philo_init(char **av, t_philo *philo);
+int				philo_atoi(char *av, t_philo *philo, t_table *table);
+t_table			*philo_init(char **av, t_philo *philo);
 
 /* philo_free.c */
-void	philo_free(char *err, t_philo *philo, t_table *table);
-void	philo_complete(t_table *table, t_philo *philo);
+void			philo_free(char *err, t_philo *philo, t_table *table);
+void			philo_complete(t_table *table, t_philo *philo);
 
 /* philo_summon.c */
-void	philo_summon(t_philo *philo, t_table *table);
+size_t			philo_utime(t_philo *person, t_time t);
+void			*philo_table(void *philo);
+void			philo_summon(t_philo *philo, t_table *table);
+
+/* philo_life.c */
+void			philo_snooze(t_philo *p, t_time t, unsigned int target);
+void			philo_thinker(t_philo *p, t_time t);
+void			philo_slumber(t_philo *p, t_time t);
+void			philo_chowder(t_philo *p, t_time t);
+
+/* philo_print.c */
+void			philo_print(t_philo *philo, t_state state, t_time t);
 
 #endif
