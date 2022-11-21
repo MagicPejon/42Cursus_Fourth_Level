@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 15:32:22 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/20 14:04:47 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/21 19:06:29 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static void	assign_forks(t_philo *philo, t_table **table)
 			philo[i].rmfork = &(*table)->m_forks[0];
 		else
 			philo[i].rmfork = &(*table)->m_forks[i + 1];
+		philo[i].lffork = &(*table)->fo_lock[i];
+		if (i == (*table)->nop - 1)
+			philo[i].rffork = &(*table)->fo_lock[0];
+		else
+			philo[i].rffork = &(*table)->fo_lock[i + 1];
 	}
 }
 
@@ -117,8 +122,10 @@ t_table	*philo_init(char **av, t_philo *philo)
 	{
 		philo[i].id = i + 1;
 		philo[i].state = SPAWNED;
-		philo[i].l_timer = 0;
-		philo[i].meals = 0;
+		if (table_info->goal != 0)
+			philo[i].meals = 0;
+		else
+			philo[i].meals = 1;
 		philo[i].t_info = table_info;
 		i++;
 	}

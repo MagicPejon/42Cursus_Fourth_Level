@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:27:35 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/20 16:27:16 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/21 19:19:07 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_time
 {
 	size_t			p_start;
 	size_t			p_life;
+	size_t			p_lastate;
 	struct timeval	random;
 }	t_time;
 
@@ -71,8 +72,9 @@ typedef struct s_philo{
 	bool			*rfork;
 	unsigned int	*lmfork;
 	unsigned int	*rmfork;
+	pthread_mutex_t	*lffork;
+	pthread_mutex_t	*rffork;
 	t_state			state;
-	unsigned int	l_timer;
 	unsigned int	meals;
 	pthread_t		thread;
 	struct timeval	start;
@@ -115,9 +117,12 @@ void			philo_summon(t_philo *philo, t_table *table);
 void			philo_snooze(t_philo *p, t_time t, unsigned int target);
 void			philo_thinker(t_philo *p, t_time t);
 void			philo_slumber(t_philo *p, t_time t);
-void			philo_chowder(t_philo *p, t_time t);
+void			philo_chowder(t_philo *p, t_time *t);
 
 /* philo_print.c */
 void			philo_print(t_philo *philo, t_state state, t_time t);
+
+/* philo_check_pulse.c */
+void			philo_check_pulse(t_philo *p, t_time t);
 
 #endif

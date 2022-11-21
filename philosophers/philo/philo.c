@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:27:50 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/20 16:10:08 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:43:17 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int ac, char **av)
 	printf("The inputs are:\n nop:%d\n ttd:%d\n tte:%d\n tts:%d\n goal:%d\n", philo->t_info->nop, philo->t_info->time_to_die, philo->t_info->time_to_eat, philo->t_info->time_to_sleep, philo->t_info->goal);
 	while (i < table->nop)
 	{
-		printf("Philosopher %d has: %d, %d and %d\n", philo[i].id, philo[i].state, philo[i].l_timer, philo[i].meals);
+		printf("Philosopher %d has: %d and %d\n", philo[i].id, philo[i].state, philo[i].meals);
 		printf("Fork set: %d\n", table->forks[i]);
 		printf("m_fork set: %d\n", table->m_forks[i]);
 		printf("Philosopher left: %p and right: %p\n", philo[i].lfork, philo[i].rfork);
