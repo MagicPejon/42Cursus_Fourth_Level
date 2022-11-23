@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/11/21 19:44:34 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/23 13:31:19 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ $(NAME): $(OBJS)
 	@printf "$(CYAN)\n==========================\n"
 	@printf "$(CYAN) SIMULATION READY\n"
 	@printf "$(CYAN)==========================\n"
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(PHILO_FLAGS) -o $(NAME)
 
 clean:
 	@printf "$(RED)CLEANING PHILO.O FILES\n"

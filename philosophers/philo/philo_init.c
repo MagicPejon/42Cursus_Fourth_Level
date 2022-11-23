@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 15:32:22 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/21 19:06:29 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/23 13:39:32 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,50 +40,50 @@ int	philo_atoi(char *av, t_philo *philo, t_table *table)
 	return (res * sign);
 }
 
-static void	assign_forks(t_philo *philo, t_table **table)
+static void	assign_forks(t_philo *philo, t_table *table)
 {
 	unsigned int	i;
 
 	i = -1;
-	while (++i < (*table)->nop)
+	while (++i < table->nop)
 	{
-		philo[i].lfork = &(*table)->forks[i];
-		if (i == (*table)->nop - 1)
-			philo[i].rfork = &(*table)->forks[0];
+		philo[i].lfork = &table->forks[i];
+		if (i == table->nop - 1)
+			philo[i].rfork = &table->forks[0];
 		else
-			philo[i].rfork = &(*table)->forks[i + 1];
-		philo[i].lmfork = &(*table)->m_forks[i];
-		if (i == (*table)->nop - 1)
-			philo[i].rmfork = &(*table)->m_forks[0];
+			philo[i].rfork = &table->forks[i + 1];
+		philo[i].lmfork = &table->m_forks[i];
+		if (i == table->nop - 1)
+			philo[i].rmfork = &table->m_forks[0];
 		else
-			philo[i].rmfork = &(*table)->m_forks[i + 1];
-		philo[i].lffork = &(*table)->fo_lock[i];
-		if (i == (*table)->nop - 1)
-			philo[i].rffork = &(*table)->fo_lock[0];
+			philo[i].rmfork = &table->m_forks[i + 1];
+		philo[i].lffork = &table->fo_lock[i];
+		if (i == table->nop - 1)
+			philo[i].rffork = &table->fo_lock[0];
 		else
-			philo[i].rffork = &(*table)->fo_lock[i + 1];
+			philo[i].rffork = &table->fo_lock[i + 1];
 	}
 }
 
-static void	fork_init(t_philo *philo, t_table **table)
+static void	fork_init(t_philo *philo, t_table *table)
 {
 	unsigned int	i;
 
-	(*table)->forks = malloc(sizeof(int) * (*table)->nop);
-	if (!(*table)->forks)
-		philo_free(ERR_MALLOC, philo, (*table));
-	(*table)->m_forks = malloc(sizeof(int) * (*table)->nop);
-	if (!(*table)->m_forks)
-		philo_free(ERR_MALLOC, philo, (*table));
-	(*table)->fo_lock = malloc(sizeof(int) * (*table)->nop);
-	if (!(*table)->fo_lock)
-		philo_free(ERR_MALLOC, philo, (*table));
+	table->forks = malloc(sizeof(int) * table->nop);
+	if (!table->forks)
+		philo_free(ERR_MALLOC, philo, table);
+	table->m_forks = malloc(sizeof(int) * table->nop);
+	if (!table->m_forks)
+		philo_free(ERR_MALLOC, philo, table);
+	table->fo_lock = malloc(sizeof(pthread_mutex_t) * table->nop);
+	if (!table->fo_lock)
+		philo_free(ERR_MALLOC, philo, table);
 	i = -1;
-	while (++i < (*table)->nop)
+	while (++i < table->nop)
 	{
-		(*table)->forks[i] = false;
-		(*table)->m_forks[i] = 0;
-		pthread_mutex_init(&(*table)->fo_lock[i], NULL);
+		table->forks[i] = false;
+		table->m_forks[i] = 0;
+		pthread_mutex_init(&table->fo_lock[i], NULL);
 	}
 	assign_forks(philo, table);
 }
@@ -102,7 +102,7 @@ static t_table	*table_init(char **av, t_philo *philo, t_table *table)
 	else
 		table->goal = 0;
 	table->philo_dead = false;
-	fork_init(philo, &table);
+	fork_init(philo, table);
 	pthread_mutex_init(&table->dlock, NULL);
 	pthread_mutex_init(&table->plock, NULL);
 	return (table);
