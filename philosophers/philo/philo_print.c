@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 16:51:18 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/23 17:12:12 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/25 15:17:19 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,29 @@ static void	philo_eating(t_philo *philo)
 
 void	philo_print(t_philo *philo, t_state state)
 {
-	//if (philo->id == 69)
-	//	philo_very_curious(philo, state, t);
-	pthread_mutex_lock(&philo->t_info->dlock);
-	if (philo->t_info->philo_dead == false)
-	{
-		pthread_mutex_lock(&philo->t_info->plock);
-		if (state == EATING)
-			philo_eating(philo);
-		if (state == SLEEPING)
-			philo_sleeping(philo);
-		if (state == THINKING)
-			philo_thinking(philo);
-		pthread_mutex_unlock(&philo->t_info->plock);
-	}
+	if (philo->id == 69 || philo->t_info->nop == 1)
+		philo_very_curious(philo, state);
 	else
 	{
-		pthread_mutex_lock(&philo->t_info->plock);
-		if (state == DEAD)
-			philo_dead(philo);
-		pthread_mutex_unlock(&philo->t_info->plock);
+		pthread_mutex_lock(&philo->t_info->dlock);
+		if (philo->t_info->philo_dead == false)
+		{
+			pthread_mutex_lock(&philo->t_info->plock);
+			if (state == EATING)
+				philo_eating(philo);
+			if (state == SLEEPING)
+				philo_sleeping(philo);
+			if (state == THINKING)
+				philo_thinking(philo);
+			pthread_mutex_unlock(&philo->t_info->plock);
+		}
+		else
+		{
+			pthread_mutex_lock(&philo->t_info->plock);
+			if (state == DEAD)
+				philo_dead(philo);
+			pthread_mutex_unlock(&philo->t_info->plock);
+		}
+		pthread_mutex_unlock(&philo->t_info->dlock);
 	}
-	pthread_mutex_unlock(&philo->t_info->dlock);
 }

@@ -6,7 +6,7 @@
 #    By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:27:54 by amalbrei          #+#    #+#              #
-#    Updated: 2022/11/23 13:31:19 by amalbrei         ###   ########.fr        #
+#    Updated: 2022/11/25 15:22:31 by amalbrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,9 @@ SRCS 	=	philo.c\
 			philo_summon.c\
 			philo_life.c\
 			philo_print.c\
-			philo_check_pulse.c
+			philo_check_pulse.c\
+			philo_solo.c\
+			philo_very_curious.c
 
 all: $(NAME)
 

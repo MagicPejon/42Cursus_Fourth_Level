@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:59:44 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/23 18:05:12 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/25 15:14:48 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define DEFAULT	"\033[0m"
 # define YELLOW		"\033[1;33m"
 # define GREEN		"\033[1;32m"
+# define BLUE		"\033[1;34m"
 # define CYAN		"\033[1;36m"
 # define RED		"\033[1;31m"
 # define PURPLE		"\033[0;35m"
@@ -105,7 +106,12 @@ t_table	*philo_init(char **av, t_philo *philo);
 void	philo_free(char *err, t_philo *philo, t_table *table);
 void	philo_complete(t_table *table, t_philo *philo);
 
+/* philo_solo.c*/
+void	philo_solo(t_philo *p);
+
 /* philo_summon.c */
+void	philo_unlock_forks(t_philo *philo);
+void	philo_lock_forks(t_philo *philo);
 size_t	philo_utime(t_philo *person);
 void	*philo_table(void *philo);
 void	philo_summon(t_philo *philo, t_table *table);
@@ -116,10 +122,13 @@ void	philo_thinker(t_philo *p);
 void	philo_slumber(t_philo *p);
 void	philo_chowder(t_philo *p);
 
+/* philo_check_pulse.c */
+int		philo_check_pulse(t_philo *p);
+
 /* philo_print.c */
 void	philo_print(t_philo *philo, t_state state);
 
-/* philo_check_pulse.c */
-void	philo_check_pulse(t_philo *p);
+/* philo_very_curious */
+void	philo_very_curious(t_philo *philo, t_state state);
 
 #endif

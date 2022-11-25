@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 20:03:42 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/23 18:06:27 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/25 15:02:12 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	philo_snooze(t_philo *p, unsigned int target)
 	{
 		usleep(100);
 		timer = philo_utime(p) - new;
-		philo_check_pulse(p);
+		if (philo_check_pulse(p))
+			break ;
 	}
 	philo_check_pulse(p);
 }
@@ -59,28 +60,17 @@ void	philo_chowder(t_philo *p)
 		(*p->rfork) = true;
 		(*p->lmfork) = p->id;
 		(*p->rmfork) = p->id;
-		pthread_mutex_unlock(p->lffork);
-		pthread_mutex_unlock(p->rffork);
+		philo_unlock_forks(p);
 		p->meals++;
 		p->p_lastate = philo_utime(p);
 		philo_check_pulse(p);
 		p->state = EATING;
 		philo_print(p, p->state);
 		philo_snooze(p, p->t_info->time_to_eat);
-		if (p->id < p->t_info->nop)
-		{
-			pthread_mutex_lock(p->lffork);
-			pthread_mutex_lock(p->rffork);
-		}
-		else
-		{
-			pthread_mutex_lock(p->rffork);
-			pthread_mutex_lock(p->lffork);
-		}
+		philo_lock_forks(p);
 		(*p->lfork) = false;
 		(*p->rfork) = false;
-		pthread_mutex_unlock(p->lffork);
-		pthread_mutex_unlock(p->rffork);
+		philo_unlock_forks(p);
 		philo_slumber(p);
 	}
 }
