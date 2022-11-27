@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 15:32:22 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/23 13:39:32 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:29:30 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ int	philo_atoi(char *av, t_philo *philo, t_table *table)
 	return (res * sign);
 }
 
+/**
+ * @brief Assigns forks with pointers to philosophers for 
+ * easier access to the forks on the table
+ * 
+ * @param philo Struct containing all information for each individual philosopher
+ * @param table Struct containing table variables, available to all philosophers
+ */
 static void	assign_forks(t_philo *philo, t_table *table)
 {
 	unsigned int	i;
@@ -65,6 +72,12 @@ static void	assign_forks(t_philo *philo, t_table *table)
 	}
 }
 
+/**
+ * @brief Initializing fork arrays for philosophers to use and lock
+ * 
+ * @param philo Struct containing all information for each individual philosopher
+ * @param table Struct containing table variables, available to all philosophers
+ */
 static void	fork_init(t_philo *philo, t_table *table)
 {
 	unsigned int	i;
@@ -88,6 +101,14 @@ static void	fork_init(t_philo *philo, t_table *table)
 	assign_forks(philo, table);
 }
 
+/**
+ * @brief Initializing the variables for the table struct
+ * 
+ * @param av 2D array from the command line
+ * @param philo Struct containing all information for each individual philosopher
+ * @param table Struct containing table variables, available to all philosophers
+ * @return t_table* The table struct
+ */
 static t_table	*table_init(char **av, t_philo *philo, t_table *table)
 {
 	int	i;
@@ -108,6 +129,13 @@ static t_table	*table_init(char **av, t_philo *philo, t_table *table)
 	return (table);
 }
 
+/**
+ * @brief Initializes all variables needed for the simulation
+ * 
+ * @param av 2D array from the command line
+ * @param philo Struct containing all information for each individual philosopher
+ * @return t_table* The struct of the table for proper freeing
+ */
 t_table	*philo_init(char **av, t_philo *philo)
 {
 	unsigned int		i;

@@ -6,18 +6,24 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 18:02:49 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/25 15:00:48 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:46:30 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/**
+ * @brief Unlocks forks with mutexes
+ */
 void	philo_unlock_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->lffork);
 	pthread_mutex_unlock(philo->rffork);
 }
 
+/**
+ * @brief Locks forks with mutexes
+ */
 void	philo_lock_forks(t_philo *philo)
 {
 	if (philo->id < philo->t_info->nop)
@@ -32,6 +38,13 @@ void	philo_lock_forks(t_philo *philo)
 	}
 }
 
+/**
+ * @brief Returns the current time of the simulation
+ * 
+ * @param person Struct containing all information for each 
+ * individual philosopher
+ * @return size_t The current time represented as person->p_life
+ */
 size_t	philo_utime(t_philo *person)
 {
 	gettimeofday(&person->life, NULL);
@@ -41,6 +54,13 @@ size_t	philo_utime(t_philo *person)
 	return (person->p_life);
 }
 
+/**
+ * @brief The Scene of the simulation where philosophers look for a fork
+ * 
+ * @param philo Struct containing all information for each individual philosopher
+ * @return void* Threads need to return something so its safest to return 
+ * a NULL here since not return is required
+ */
 void	*philo_table(void *philo)
 {
 	t_philo	*p;
@@ -64,10 +84,17 @@ void	*philo_table(void *philo)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&p->t_info->dlock);
+		usleep(100);
 	}
 	return (NULL);
 }
 
+/**
+ * @brief Creates the threads representing every philosopher
+ * 
+ * @param philo Struct containing all information for each individual philosopher
+ * @param table Struct containing table variables, available to all philosophers
+ */
 void	philo_summon(t_philo *philo, t_table *table)
 {
 	unsigned int	i;

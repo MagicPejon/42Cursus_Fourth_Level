@@ -19,12 +19,15 @@ PURPLE	=	\033[0;35m
 CYAN	=	\033[1;36m
 
 NAME	=	philo
+SRC_DIR	=	Source_Files
+OBJ_DIR	=	Object_Files
+INC_DIR =	-IIncludes
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror
 PHILO_FLAGS = -g -pthread
 RM		=	rm	-rf
 
-SRCS 	=	philo.c\
+SRC 	=	philo.c\
 			philo_init.c\
 			philo_free.c\
 			philo_summon.c\
@@ -34,29 +37,30 @@ SRCS 	=	philo.c\
 			philo_solo.c\
 			philo_very_curious.c
 
+OBJ	= 	$(addprefix $(OBJ_DIR)/, $(SRC:%c=%o))
+
 all: $(NAME)
 
-%.o: %.c
-	@printf "\033[A\033[2K\r$(GREEN)Compiling: "
-	$(CC) $(CFLAGS) $(PHILO_FLAGS) -c $< -o $@
-	@printf "🌚🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳💆‍♂️💆‍♂️💆‍♀️💆‍♀️📜📜📜📜🌝"
-	
-OBJS	= 	$(SRCS:.c=.o)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	@printf "\033[A\033[2K\r$(GREEN)Compiling:"
+	$(CC) $(CFLAGS) $(PHILO_FLAGS) $(INC_DIR) -c $< -o $@
+	@printf "🌚🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳🧑‍🍳💆‍♂️💆‍♂️💆‍♀️💆‍♀️💆‍♂️💆‍♂️💆‍♀️💆‍♀️📜📜📜📜📜📜📜📜🌝"
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJ)
 	@printf "$(CYAN)\n==========================\n"
 	@printf "$(CYAN) SIMULATION READY\n"
 	@printf "$(CYAN)==========================\n"
-	@$(CC) $(CFLAGS) $(OBJS) $(PHILO_FLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(PHILO_FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	@printf "$(RED)CLEANING PHILO.O FILES\n"
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJ_DIR)
 
 fclean: clean
 	@printf "$(RED)CLEANING PHILOSOPHERS PROGRAM\n"
 	@$(RM) $(NAME)
 
-re: fclean $(NAME)
+re: fclean all
 
 .PHONY = all clean fclean re

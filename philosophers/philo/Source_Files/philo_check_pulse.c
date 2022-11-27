@@ -6,12 +6,19 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 16:53:45 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/25 14:27:08 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:58:32 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/**
+ * @brief Checks if the philosopher should have died or if there is an already
+ * dead philosopher
+ * 
+ * @param p Struct containing all information for each individual philosopher
+ * @return int Whether there is a phlosopher dead: 1 or not: 0
+ */
 int	philo_check_pulse(t_philo *p)
 {
 	pthread_mutex_lock(&p->t_info->dlock);
