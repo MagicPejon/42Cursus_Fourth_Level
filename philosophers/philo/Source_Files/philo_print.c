@@ -6,7 +6,7 @@
 /*   By: amalbrei <amalbrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 16:51:18 by amalbrei          #+#    #+#             */
-/*   Updated: 2022/11/27 16:55:25 by amalbrei         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:42:58 by amalbrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	philo_eating(t_philo *philo)
  */
 void	philo_print(t_philo *philo, t_state state)
 {
-	if (philo->id == 69 || philo->t_info->nop == 1)
+	if (philo->id == 69 || philo->t_info->nop == 1 || philo->t_info->nop == 69)
 		philo_very_curious(philo, state);
 	else
 	{
